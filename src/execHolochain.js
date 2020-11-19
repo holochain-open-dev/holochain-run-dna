@@ -21,7 +21,10 @@ admin_interfaces:
     - driver:
         type: websocket
         port: ${ADMIN_PORT}  
-network: ~`;
+network:
+    bootstrap_service: https://bootstrap.holo.host
+    transport_pool:
+      - type: quic`;
 
   const configFile = tmp.fileSync({});
 
@@ -33,10 +36,14 @@ network: ~`;
 export async function execHolochain() {
   const configFilePath = createConfigFile();
 
-  child_process.spawn("lair-keystore", [], {
+  console.log('\nConfig File Path : ', configFilePath);
+
+  const lair = child_process.spawn("lair-keystore", [], {
     stdio: "inherit",
     env: process.env,
   });
+
+  console.log('Lair Keystore Process : ', lair);
 
   await sleep(100);
 
