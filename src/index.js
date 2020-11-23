@@ -1,19 +1,21 @@
-import { getAppToInstall, sleep } from "./utils";
+import { getDnasToInstall, sleep } from "./utils";
 import { execHolochain } from "./execHolochain";
 import { installApp } from "./installApp";
 
-async function execAndInstall(appToInstall) {
+async function execAndInstall(dnasToInstall) {
   // Execute holochain
   await execHolochain();
 
   await sleep(100);
 
-  installApp(appToInstall.port, appToInstall.dnas, appToInstall.appId);
+  for (const dnasPorts of dnasToInstall) {
+    installApp(dnasPorts.port, [dnasPorts.dnaPath], "test-app");
+  }
 }
 
 try {
-  const appToInstall = getAppToInstall();
-  execAndInstall(appToInstall).catch(console.error);
+  const dnasToInstall = getDnasToInstall();
+  execAndInstall(dnasToInstall).catch(console.error);
 } catch (e) {
   console.error(e.message);
 }
