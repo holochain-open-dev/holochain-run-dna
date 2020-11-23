@@ -21,7 +21,10 @@ admin_interfaces:
     - driver:
         type: websocket
         port: ${ADMIN_PORT}  
-network: ~`;
+network:
+    bootstrap_service: https://bootstrap.holo.host
+    transport_pool:
+      - type: quic`;
 
   const configFile = tmp.fileSync({});
 
